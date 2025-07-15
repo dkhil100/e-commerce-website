@@ -1,0 +1,586 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛍️ ShopEase | Boutique en ligne</title>
+
+    <!-- Polices + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- STYLES -->
+    <style>
+        .products {
+    padding: 80px 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #fff;
+}
+
+.products-grid {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: nowrap; /* horizontal scroll on small screens */
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
+}
+
+.product-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(229, 57, 83, 0.1);
+    overflow: hidden;
+    width: 280px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 14px 38px rgba(229, 57, 83, 0.25);
+}
+
+.product-img-container {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+    border-radius: 12px;
+    margin: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    border-radius: 12px;
+}
+
+.product-card:hover .product-img {
+    transform: scale(1.1);
+}
+
+.product-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #ff6b6b;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    box-shadow: 0 4px 8px rgba(229, 57, 83, 0.3);
+    z-index: 10;
+}
+
+.product-info {
+    padding: 0 20px 30px;
+    text-align: center;
+}
+
+.product-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #1a1a1a;
+}
+
+.product-price {
+    font-weight: 700;
+    font-size: 20px;
+    color: #ff6b6b;
+}
+
+.product-price .old-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.add-to-cart {
+    display: inline-block;
+    background: #ff6b6b;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    box-shadow: 0 8px 16px rgba(229, 57, 83, 0.3);
+    transition: background 0.3s ease;
+    text-decoration: none;
+}
+
+.add-to-cart:hover {
+    background: #ff5252;
+}
+        /* ——— reset & base ——— */
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+        body{color:#333;line-height:1.6;background:#f9f9f9;}
+
+        /* ——— header ——— */
+        header{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);position:sticky;top:0;z-index:1000;}
+        .top-bar{background:#1a1a1a;color:#fff;padding:10px 5%;font-size:14px;display:flex;justify-content:space-between;}
+
+        .main-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 5%;max-width:1400px;margin:0 auto;}
+
+        .logo{font-size:28px;font-weight:700;color:#1a1a1a;}
+        .logo a {
+    text-decoration: none;
+    color: inherit;
+}
+        .logo span{color:#ff6b6b;}
+
+        /* nav links */
+        .nav-links {
+    display: flex;
+    list-style: none;
+}
+.nav-links li {
+    margin-left: 30px;
+}
+.nav-links a {
+    font-weight: 600; /* thicker */
+    color: #333;
+    text-decoration: none; /* remove underline */
+    font-size: 1.08rem;
+    padding: 4px 0;
+    background: linear-gradient(90deg, #ff6b6b 0%, #ff5252 100%);
+    background-size: 0% 3px;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    transition: color .3s, background-size .3s;
+    border: none;
+}
+.nav-links a:hover, .nav-links a:focus {
+    color: #ff6b6b;
+    background-size: 100% 3px; /* show gradient underline on hover */
+    text-decoration: none;
+}
+
+        /* nav icons */
+        .nav-icons{display:flex;align-items:center;position:relative;}
+        .nav-icons a{margin-left:20px;font-size:20px;color:#333;transition:color .3s;}
+        .nav-icons a:hover{color:#ff6b6b;}
+
+        /* —— SEARCH BOX —— */
+        .search-box{display:flex;align-items:center;position:relative;}
+        .search-input{
+            display:none;           /* caché par défaut */
+            max-width:180px;
+            padding:.4rem .8rem;
+            font-size:1rem;
+            border:none;border-radius:20px;
+            background:#f1f1f1;
+            outline:none;
+        }
+        .search-input.visible{
+            display:inline-block;   /* s’affiche quand .visible */
+            animation:grow .25s forwards;
+        }
+        @keyframes grow{from{width:0;opacity:0;}to{width:180px;opacity:1;}}
+
+        /* ——— hero ——— */
+        .hero-banner{height:600px;background:url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;display:flex;align-items:center;padding:0 5%;color:#fff;}
+        .hero-content{max-width:500px;background:rgba(0,0,0,.7);padding:40px;border-radius:10px;}
+        .hero-content h1{font-size:48px;margin-bottom:20px;}
+        .hero-content p{margin-bottom:30px;font-size:18px;}
+        .btn {
+    display:inline-block;
+    background:linear-gradient(90deg,#ff6b6b 60%,#ff5252 100%);
+    color:#fff;
+    padding:14px 36px;
+    border-radius:30px;
+    font-weight:600;
+    font-size:18px;
+    box-shadow:0 4px 16px #e5393533;
+    transition:background .3s,transform .2s, box-shadow .2s;
+    letter-spacing:1px;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    text-decoration: none; /* Remove underline */
+}
+.btn::after {
+    content: '';
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 0; height: 0;
+    background: rgba(255,255,255,0.25);
+    border-radius: 100%;
+    transform: translate(-50%,-50%);
+    transition: width .4s cubic-bezier(.4,0,.2,1), height .4s cubic-bezier(.4,0,.2,1);
+    z-index: 0;
+    pointer-events: none;
+}
+.btn:hover {
+    background:linear-gradient(90deg,#ff5252 60%,#ff6b6b 100%);
+    transform:translateY(-2px) scale(1.04);
+    box-shadow:0 8px 32px #e5393533;
+}
+.btn:hover::after {
+    width: 220%; height: 400%;
+}
+.btn span {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    transition: transform .2s;
+}
+.btn:hover span {
+    transform: scale(1.08) translateX(4px) rotate(-2deg);
+}
+
+        /* ——— categories ——— */
+        .categories{padding:80px 5%;max-width:1400px;margin:0 auto;}
+        .section-title{text-align:center;margin-bottom:50px;}
+        .section-title h2{font-size:36px;color:#1a1a1a;}
+        .categories-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;}
+        .category-card{position:relative;height:300px;border-radius:10px;overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,.1);transition:transform .3s;}
+        .category-card:hover{transform:translateY(-10px);}
+        .category-img{width:100%;height:100%;object-fit:cover;}
+        .category-overlay{position:absolute;bottom:0;left:0;width:100%;padding:20px;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);color:#fff;}
+        .category-overlay h3{font-size:24px;margin-bottom:10px;}
+
+        /* ——— products ——— */
+        .products{padding:80px 5%;max-width:1400px;margin:0 auto;background:#fff;}
+        .products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;}
+        .product-card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,.1);transition:transform .3s;}
+        .product-card:hover{transform:translateY(-10px);}
+        .product-img-container{height:250px;overflow:hidden;position:relative;}
+        .product-img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+        .product-card:hover .product-img{transform:scale(1.1);}
+        .product-badge{position:absolute;top:10px;right:10px;background:#ff6b6b;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;font-weight:600;}
+        .product-info{padding:20px;}
+        .product-title{font-size:18px;margin-bottom:10px;}
+        .product-price{font-weight:700;color:#ff6b6b;font-size:20px;margin-bottom:15px;}
+        .product-price .old-price{text-decoration:line-through;color:#999;font-size:16px;margin-left:10px;}
+        .add-to-cart{display:block;width:100%;background:#1a1a1a;color:#fff;text-align:center;padding:10px;border-radius:5px;font-weight:500;transition:background .3s;}
+        .add-to-cart:hover{background:#ff6b6b;}
+
+        /* ——— newsletter ——— */
+        .newsletter{padding:80px 5%;background:#f1f1f1;text-align:center;}
+        .newsletter-content{max-width:600px;margin:0 auto;}
+        .newsletter h2{font-size:36px;margin-bottom:20px;}
+        .newsletter p{margin-bottom:30px;font-size:18px;}
+        .newsletter-form{display:flex;max-width:500px;margin:0 auto;}
+        .newsletter-form input{flex:1;padding:15px;border:none;border-radius:30px 0 0 30px;font-size:16px;}
+        .newsletter-form button{background:#ff6b6b;color:#fff;border:none;padding:0 30px;border-radius:0 30px 30px 0;font-weight:600;cursor:pointer;transition:background .3s;}
+        .newsletter-form button:hover{background:#ff5252;}
+
+        /* ——— footer ——— */
+        footer{background:#1a1a1a;color:#fff;padding:80px 5% 30px;}
+        .footer-content{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;}
+        .footer-column h3{font-size:20px;margin-bottom:20px;color:#ff6b6b;}
+        .footer-links{list-style:none;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:#bbb;transition:color .3s;}
+        .footer-links a:hover{color:#ff6b6b;}
+        .social-links{display:flex;gap:15px;margin-top:20px;}
+        .social-links a{color:#fff;font-size:20px;transition:color .3s;}
+        .social-links a:hover{color:#ff6b6b;}
+        .payment-methods img{max-width:100%;margin-top:20px;}
+        .copyright{text-align:center;margin-top:50px;padding-top:20px;border-top:1px solid #333;color:#bbb;font-size:14px;}
+
+        /* ——— responsive ——— */
+        @media(max-width:768px){
+            .main-nav{flex-direction:column;padding:15px;}
+            .nav-links{margin:20px 0;}
+            .nav-links li{margin:0 10px;}
+            .hero-content h1{font-size:36px;}
+            .newsletter-form{flex-direction:column;}
+            .newsletter-form input{border-radius:30px;margin-bottom:10px;}
+            .newsletter-form button{border-radius:30px;padding:15px;}
+        }
+
+        /* section reveal */
+        .section{opacity:0;transform:translateY(60px);transition:opacity .8s cubic-bezier(.4,0,.2,1),transform .8s cubic-bezier(.4,0,.2,1);}
+        .section.visible{opacity:1;transform:none;}
+
+        .cart-qty-badge {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    background: #ff6b6b;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 10px;
+    min-width: 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px #e5393533;
+    z-index: 2;
+    pointer-events: none;
+}
+    </style>
+</head>
+<body>
+
+    <!-- ——— HEADER ——— -->
+    <header>
+
+        <nav class="main-nav">
+            <div class="logo"><a href="/">Omni<span>Cart</span></a></div>
+
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="{% url 'store' %}">Shop</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+
+            <!-- NAV ICONS + barre de recherche -->
+            <div class="nav-icons">
+                <!-- Replace your search bar block with this fancy styled search box -->
+<style>
+    .search-box-fancy {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-right: 20px; /* move to the left side */
+    }
+    .search-input-fancy {
+        width: 0;
+        opacity: 0;
+        padding: 0.5rem 1.2rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 30px;
+        background: linear-gradient(90deg, #f1f1f1 60%, #ffeaea 100%);
+        outline: none;
+        transition: width 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s;
+        box-shadow: 0 2px 8px #e5393533;
+        position: absolute;
+        right: 40px; /* animation from left side */
+        z-index: 2;
+    }
+    .search-input-fancy.visible {
+        width: 180px;
+        opacity: 1;
+    }
+    .search-btn-fancy {
+        background: linear-gradient(90deg, #ff6b6b 60%, #ff5252 100%);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        box-shadow: 0 2px 8px #e5393533;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+        z-index: 3;
+        position: relative;
+        left: 25px;
+    }
+    .search-btn-fancy:hover {
+        background: linear-gradient(90deg, #ff5252 60%, #ff6b6b 100%);
+        transform: scale(1.08);
+    }
+</style>
+<div class="search-box-fancy" style="justify-content: flex-end;">
+    <form method="get" action="{% url 'search' %}" style="display:inline; position:relative;">
+        <input type="text" id="search-input" name="q" class="search-input-fancy" placeholder="Rechercher…" autocomplete="off">
+        <button type="submit" class="search-btn-fancy" id="search-trigger">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded',()=>{
+        const trig=document.getElementById('search-trigger');
+        const input=document.getElementById('search-input');
+        const openSearch=()=>{
+            input.classList.add('visible');
+            input.style.opacity='1';
+            input.style.width='180px';
+            input.focus();
+        };
+        const closeSearch=()=>{
+            input.classList.remove('visible');
+            input.style.opacity='0';
+            input.style.width='0';
+            input.value='';
+        };
+        trig.addEventListener('click',e=>{
+            // Only open the input if it's hidden, otherwise let the form submit
+            if(!input.classList.contains('visible')){
+                e.preventDefault();
+                openSearch();
+            }
+            // If input is visible, clicking the button will submit the form (default behavior)
+        });
+        input.addEventListener('blur',()=>{
+            if(input.value.trim()===''){closeSearch();}
+        });
+    });
+</script>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+                    <a href="#" class="cart-icon" title="Profil"><i class="fa fa-user me-2"></i></a>
+                    <a href="{% url 'cart_summary' %}" class="cart-icon" title="Cart" style="position:relative;">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-qty-badge" id="cart_quantity">{{ cart|length }}</span>
+                    </a>
+                    
+                {% else %}
+                    <a href="{% url 'login' %}" title="Login"><i class="fas fa-sign-in-alt"></i></a>
+                    <a href="{% url 'register' %}" title="Sign up"><i class="fas fa-user-plus"></i></a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- ——— HERO ——— -->
+    <section class="hero-banner section">
+    <div class="hero-content">
+        <h1 class="hero-main-title">
+            <span class="hero-title-anything">anything</span>
+            <span class="hero-title-youare">you are</span>
+            <span class="hero-title-lookingfor">looking for</span>
+        </h1>
+        <style>
+        .hero-main-title {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            color: #fff;
+            text-shadow: 0 4px 24px rgba(229,57,83,0.10);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hero-title-anything,
+        .hero-title-lookingfor {
+            background: linear-gradient(90deg,#fff,#ffb6b6 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+        .hero-title-youare {
+            background: linear-gradient(90deg,#ff6b6b,#ff5252 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            margin: 0 6px;
+        }
+        @media (max-width: 700px) {
+            .hero-main-title { font-size: 30px; gap: 4px;}
+        }
+        </style>
+        <p>Discover our new products with exceptional discounts of up to 50%</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'store' %}" class="btn">start shopping</a>
+        {% else %}
+        <a href="{% url 'login' %}" class="btn">start shopping</a>
+        {% endif %}
+    </div>
+</section>
+
+    <!-- ——— CATAGORIES ——— -->
+  <section class="products section">
+    <div class="section-title"><h2>Nos Catégories</h2></div>
+    <div class="products-grid">
+        {% for category in categories %}
+        <div class="product-card">
+            <div class="product-img-container">
+                {% if category.image %}
+                    <img class="product-img" src="{{ category.image.url }}" alt="{{ category.name }}">
+                {% else %}
+                    <img class="product-img" src="{% static 'images/placeholder.jpg' %}" alt="{{ category.name }}">
+                {% endif %}
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">{{ category.name }}</h3>
+                <a href="{% url 'category_detail' category.slug %}" class="add-to-cart">Voir les produits</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+    <!-- ——— FOOTER ——— -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>BoutiquePlus</h3>
+                <p>Votre destination shopping en ligne pour des produits de qualité à des prix imbattables.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Informations</h3>
+                <ul class="footer-links">
+                    <li><a href="#">À propos de nous</a></li>
+                    <li><a href="#">Livraison</a></li>
+                    <li><a href="#">Politique de retour</a></li>
+                    <li><a href="#">Conditions générales</a></li>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+            {% if user.is_authenticated %}
+            <div class="footer-column">
+                <h3>Mon Compte</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Mon compte</a></li>
+                    <li><a href="#">Historique de commandes</a></li>
+                    <li><a href="#">Liste de souhaits</a></li>
+                    <li><a href="#">Newsletter</a></li>
+                    <li><a href="#">Aide & Contact</a></li>
+                </ul>
+            </div>
+            {% endif %}
+            <div class="footer-column" id="contact">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Rue du Commerce, Paris</li>
+                    <li><i class="fas fa-phone"></i> +33 1 23 45 67 89</li>
+                    <li><i class="fas fa-envelope"></i> contact@boutiqueplus.com</li>
+                </ul>
+                <div class="payment-methods">
+                    <img src="https://via.placeholder.com/250x40?text=Payment+Methods" alt="Méthodes de paiement">
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 ShopEase. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- ——— SCRIPTS ——— -->
+    <script>
+        /* reveal sections on scroll */
+        document.addEventListener('DOMContentLoaded',()=>{
+            const sections=document.querySelectorAll('.section');
+            const obs=new IntersectionObserver((entries,o)=>{
+                entries.forEach(e=>{
+                    if(e.isIntersecting){e.target.classList.add('visible');o.unobserve(e.target);}
+                });
+            },{threshold:.15});
+            sections.forEach(s=>obs.observe(s));
+        });
+    </script>
+
+</body>
+</html>
