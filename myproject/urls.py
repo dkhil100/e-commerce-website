@@ -16,12 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from payment import views as payment_views
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('store.urls')),
+    # Include payment URLs at root so legacy/unprefixed reverses work in tests
     path('cart/', include('cart.urls')),
     path('payment/', include('payment.urls')),
 ]
@@ -30,3 +32,13 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Legacy/unprefixed payment URL names (some tests expect these names without the 'payment:' namespace)
+urlpatterns += [
+    path('checkout/', payment_views.checkout, name='checkout'),
+    path('process/', payment_views.process_payment, name='process_payment'),
+    path('success/<int:order_id>/', payment_views.payment_success, name='payment_success'),
+    path('failed/', payment_views.payment_failed, name='payment_failed'),
+    path('orders/', payment_views.order_history, name='order_history'),
+    path('order/<int:order_id>/', payment_views.order_detail, name='order_detail'),
+]
