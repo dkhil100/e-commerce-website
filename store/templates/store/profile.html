@@ -1,0 +1,772 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | OmniCart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Header Styles */
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .logo a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo span {
+            color: #ff6b6b;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            font-size: 1.08rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b6b;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-icons a {
+            margin-left: 20px;
+            font-size: 20px;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .nav-icons a:hover {
+            color: #ff6b6b;
+        }
+
+        /* Profile Container */
+        .profile-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .profile-header {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .profile-picture-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ff6b6b;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .default-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 60px;
+            border: 5px solid #ff6b6b;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .upload-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: #ff5252;
+            transform: scale(1.1);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .profile-email {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Profile Actions */
+        .profile-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .action-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .action-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .action-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+
+        /* Recent Orders */
+        .recent-orders {
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-info h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .order-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .order-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #ffeaa7;
+            color: #d63031;
+        }
+
+        .status-paid {
+            background: #55efc4;
+            color: #00b894;
+        }
+
+        .status-processing {
+            background: #74b9ff;
+            color: #0984e3;
+        }
+
+        .status-shipped {
+            background: #a29bfe;
+            color: #6c5ce7;
+        }
+
+        .status-delivered {
+            background: #fd79a8;
+            color: #e84393;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: slideInDown 0.3s ease-out;
+        }
+
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .close:hover {
+            color: #ff6b6b;
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            transition: border-color 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #ff6b6b;
+        }
+
+        .upload-area.dragover {
+            border-color: #ff6b6b;
+            background-color: #f8f9fa;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-input-label {
+            cursor: pointer;
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .profile-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .order-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+
+        /* Messages */
+        .messages {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1050;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="main-nav">
+            <div class="logo"><a href="/"><span>Omni</span>Cart</a></div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="{% url 'store' %}">Shop</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="{% url 'logout' %}" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+                <a href="{% url 'profile' %}" title="Profile"><i class="fa fa-user"></i></a>
+                <a href="{% url 'cart_summary' %}" title="Cart"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Profile Container -->
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-picture-container">
+                {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="profile-picture" id="profileImage">
+                {% else %}
+                    <div class="default-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                {% endif %}
+                <button class="upload-btn" onclick="openUploadModal()">
+                    <i class="fas fa-camera"></i>
+                </button>
+            </div>
+            
+            <h1 class="profile-name">
+                {% if user.first_name and user.last_name %}
+                    {{ user.first_name }} {{ user.last_name }}
+                {% else %}
+                    {{ user.username }}
+                {% endif %}
+            </h1>
+            <p class="profile-email">{{ user.email }}</p>
+            
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-number">{{ total_orders }}</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ user.date_joined|date:"Y" }}</div>
+                    <div class="stat-label">Member Since</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Actions -->
+        <div class="profile-actions">
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h3 class="action-title">Edit Profile</h3>
+                <p class="action-description">Update your personal information, contact details, and preferences.</p>
+                <a href="{% url 'edit_profile' %}" class="btn">Edit Profile</a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3 class="action-title">Change Password</h3>
+                <p class="action-description">Update your password to keep your account secure.</p>
+                <a href="{% url 'change_password' %}" class="btn">Change Password</a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <h3 class="action-title">Order History</h3>
+                <p class="action-description">View your complete order history and track shipments.</p>
+                <a href="#" class="btn">View Orders</a>
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        {% if recent_orders %}
+        <div class="recent-orders">
+            <h2 class="section-title">
+                <i class="fas fa-clock"></i>
+                Recent Orders
+            </h2>
+            {% for order in recent_orders %}
+            <div class="order-item">
+                <div class="order-info">
+                    <h4>Order #{{ order.id }}</h4>
+                    <p>{{ order.created_at|date:"M d, Y" }} • ${{ order.total_amount }}</p>
+                </div>
+                <span class="order-status status-{{ order.payment_status }}">
+                    {{ order.payment_status|capfirst }}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeUploadModal()">&times;</span>
+            <h2>Update Profile Picture</h2>
+            
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #ddd; margin-bottom: 20px;"></i>
+                <p>Drag and drop your image here or 
+                    <label for="fileInput" class="file-input-label">browse to upload</label>
+                </p>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                {% if profile.profile_picture %}
+                <button onclick="deleteProfilePicture()" class="btn btn-danger">Delete Current</button>
+                {% endif %}
+                <button onclick="closeUploadModal()" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Auto-hide messages after 5 seconds
+        setTimeout(function() {
+            $('.messages').fadeOut();
+        }, 5000);
+
+        // Upload Modal Functions
+        function openUploadModal() {
+            document.getElementById('uploadModal').style.display = 'block';
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+        }
+
+        // File Upload Handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        // Click to upload
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                uploadProfilePicture(files[0]);
+            }
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                uploadProfilePicture(e.target.files[0]);
+            }
+        });
+
+        // Upload function
+        function uploadProfilePicture(file) {
+            const formData = new FormData();
+            formData.append('profile_picture', file);
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+            $.ajax({
+                url: '{% url "upload_profile_picture" %}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        // Update profile image
+                        const profileImage = document.getElementById('profileImage');
+                        if (profileImage) {
+                            profileImage.src = response.image_url;
+                        } else {
+                            // Replace default avatar with image
+                            const container = document.querySelector('.profile-picture-container');
+                            container.innerHTML = `
+                                <img src="${response.image_url}" alt="Profile Picture" class="profile-picture" id="profileImage">
+                                <button class="upload-btn" onclick="openUploadModal()">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            `;
+                        }
+                        
+                        closeUploadModal();
+                        showMessage(response.message, 'success');
+                    } else {
+                        showMessage(response.message, 'error');
+                    }
+                },
+                error: function() {
+                    showMessage('An error occurred while uploading the image.', 'error');
+                }
+            });
+        }
+
+        // Delete profile picture
+        function deleteProfilePicture() {
+            if (confirm('Are you sure you want to delete your profile picture?')) {
+                $.ajax({
+                    url: '{% url "delete_profile_picture" %}',
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Replace image with default avatar
+                            const container = document.querySelector('.profile-picture-container');
+                            container.innerHTML = `
+                                <div class="default-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <button class="upload-btn" onclick="openUploadModal()">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            `;
+                            
+                            closeUploadModal();
+                            showMessage(response.message, 'success');
+                        } else {
+                            showMessage(response.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        showMessage('An error occurred while deleting the image.', 'error');
+                    }
+                });
+            }
+        }
+
+        // Show message function
+        function showMessage(message, type) {
+            const messagesContainer = $('.messages');
+            if (messagesContainer.length === 0) {
+                $('body').append('<div class="messages"></div>');
+            }
+            
+            $('.messages').append(`
+                <div class="alert alert-${type}">
+                    ${message}
+                </div>
+            `);
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                $('.alert').last().fadeOut();
+            }, 5000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('uploadModal');
+            if (event.target === modal) {
+                closeUploadModal();
+            }
+        }
+    </script>
+</body>
+</html>

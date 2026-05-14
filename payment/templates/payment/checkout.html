@@ -1,0 +1,923 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛒 Checkout - OmniCart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Advanced Animation Keyframes */
+        @keyframes slideInUp {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideInDown {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideInLeft {
+            0% { transform: translateX(-50px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideInRight {
+            0% { transform: translateX(50px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes zoomIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(255, 107, 107, 0.6); }
+        }
+
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            color: #333;
+            line-height: 1.6;
+            background: #f9f9f9;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 107, 107, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 82, 82, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        /* Header */
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideInDown 0.8s ease-out;
+        }
+        
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: slideInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            transition: all 0.3s ease;
+            animation: bounceIn 1s ease-out 0.3s both;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+        }
+        
+        .logo a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .logo span {
+            color: #ff6b6b;
+            animation: pulse 2s infinite;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            font-size: 1.08rem;
+            padding: 4px 0;
+            background: linear-gradient(90deg, #ff6b6b 0%, #ff5252 100%);
+            background-size: 0% 3px;
+            background-repeat: no-repeat;
+            background-position: left bottom;
+            transition: color .3s, background-size .3s;
+            border: none;
+        }
+        
+        .nav-links a:hover, .nav-links a:focus {
+            color: #ff6b6b;
+            background-size: 100% 3px;
+            text-decoration: none;
+        }
+        
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            position: relative;
+            animation: slideInLeft 0.8s ease-out 0.6s both;
+        }
+        
+        .nav-icons a {
+            margin-left: 20px;
+            font-size: 20px;
+            color: #333;
+            transition: all .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        .nav-icons a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff6b6b, #ff5252);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-icons a:hover {
+            color: #ff6b6b;
+            transform: translateY(-2px) scale(1.1);
+        }
+        
+        .nav-icons a:hover::after {
+            width: 100%;
+        }
+
+        /* Checkout container */
+        .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            animation: slideInUp 0.8s ease-out 0.3s both;
+        }
+        
+        .checkout-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            position: relative;
+            animation: bounceIn 1s ease-out 0.5s both;
+        }
+        
+        .checkout-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #ff5252);
+            transform: translateX(-50%);
+            border-radius: 2px;
+            animation: slideInRight 0.8s ease-out 0.8s both;
+        }
+        
+        .checkout-title i {
+            color: #ff6b6b;
+            margin-right: 15px;
+        }
+
+        /* Form styling */
+        .checkout-form {
+            animation: slideInLeft 0.8s ease-out 0.6s both;
+        }
+        
+        .form-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(229, 57, 83, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: zoomIn 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .form-card:nth-child(1) { animation-delay: 0.2s; }
+        .form-card:nth-child(2) { animation-delay: 0.4s; }
+        .form-card:nth-child(3) { animation-delay: 0.6s; }
+        
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(229, 57, 83, 0.15);
+        }
+        
+        .form-card-header {
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            color: white;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-card-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: slideInRight 3s ease-in-out infinite;
+        }
+        
+        .form-card-header i {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .form-card-body {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .form-control:hover {
+            border-color: #ff6b6b;
+        }
+        
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 40px;
+            appearance: none;
+        }
+        
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 5px;
+        }
+
+        /* Card form */
+        .card-form {
+            display: none;
+            animation: slideInUp 0.5s ease-out;
+        }
+        
+        .card-form.active {
+            display: block;
+        }
+
+        /* Order summary */
+        .order-summary {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 100px;
+            animation: slideInRight 0.8s ease-out 0.8s both;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-summary h4 {
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .order-summary h4::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #ff6b6b, #ff5252);
+        }
+        
+        .order-summary h4 i {
+            color: #ff6b6b;
+            margin-right: 10px;
+        }
+        
+        .product-item {
+            border-bottom: 1px solid rgba(255, 107, 107, 0.1);
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .product-item:last-child {
+            border-bottom: none;
+        }
+        
+        .product-item:hover {
+            background: rgba(255, 107, 107, 0.05);
+            padding-left: 10px;
+            border-radius: 8px;
+        }
+        
+        .product-item h6 {
+            color: #1a1a1a;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .product-item .text-muted {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .product-item strong {
+            color: #ff6b6b;
+            font-weight: 700;
+        }
+        
+        .order-total {
+            border-top: 2px solid #ff6b6b;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+        
+        .order-total .d-flex {
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .order-total .d-flex:last-child {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #ff6b6b;
+        }
+
+        /* Submit button */
+        .btn-submit {
+            background: linear-gradient(45deg, #ff6b6b, #ff5252);
+            color: #fff;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 24px rgba(229, 57, 83, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: bounceIn 1s ease-out 1s both;
+        }
+        
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+        
+        .btn-submit:hover::before {
+            width: 200%;
+            height: 200%;
+        }
+        
+        .btn-submit:hover {
+            background: linear-gradient(45deg, #ff5252, #ff6b6b);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 16px 40px rgba(229, 57, 83, 0.4);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+        
+        .btn-submit i {
+            margin-right: 10px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-nav {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-links {
+                margin: 20px 0;
+            }
+            
+            .nav-links li {
+                margin: 0 10px;
+            }
+            
+            .checkout-container {
+                padding: 20px 10px;
+            }
+            
+            .checkout-title {
+                font-size: 2rem;
+            }
+            
+            .form-card-body {
+                padding: 20px;
+            }
+            
+            .order-summary {
+                position: static;
+                margin-top: 30px;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading.show {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="main-nav">
+            <div class="logo"><a href="/">Omni<span>Cart</span></a></div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="{% url 'store' %}">Shop</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'payment:order_history' %}">My Orders</a></li>
+                {% endif %}
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-icons">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+                    <a href="#" title="Profile"><i class="fa fa-user"></i></a>
+                    <a href="{% url 'cart_summary' %}" title="Cart" style="position:relative;">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" title="Login"><i class="fas fa-sign-in-alt"></i></a>
+                    <a href="{% url 'register' %}" title="Sign up"><i class="fas fa-user-plus"></i></a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- Checkout Section -->
+    <div class="checkout-container">
+        <h1 class="checkout-title">
+            <i class="fas fa-shopping-cart"></i> Checkout
+        </h1>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <form method="post" id="checkout-form" class="checkout-form">
+                    {% csrf_token %}
+                    
+                    <!-- Customer Information -->
+                    <div class="form-card">
+                        <div class="form-card-header">
+                            <i class="fas fa-user"></i> Customer Information
+                        </div>
+                        <div class="form-card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ checkout_form.first_name.id_for_label }}" class="form-label">First Name</label>
+                                        {{ checkout_form.first_name }}
+                                        {% if checkout_form.first_name.errors %}
+                                            <div class="text-danger">{{ checkout_form.first_name.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ checkout_form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                                        {{ checkout_form.last_name }}
+                                        {% if checkout_form.last_name.errors %}
+                                            <div class="text-danger">{{ checkout_form.last_name.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ checkout_form.email.id_for_label }}" class="form-label">Email</label>
+                                        {{ checkout_form.email }}
+                                        {% if checkout_form.email.errors %}
+                                            <div class="text-danger">{{ checkout_form.email.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ checkout_form.phone.id_for_label }}" class="form-label">Phone</label>
+                                        {{ checkout_form.phone }}
+                                        {% if checkout_form.phone.errors %}
+                                            <div class="text-danger">{{ checkout_form.phone.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Shipping Address -->
+                    <div class="form-card">
+                        <div class="form-card-header">
+                            <i class="fas fa-map-marker-alt"></i> Shipping Address
+                        </div>
+                        <div class="form-card-body">
+                            <div class="form-group">
+                                <label for="{{ checkout_form.address.id_for_label }}" class="form-label">Address</label>
+                                {{ checkout_form.address }}
+                                {% if checkout_form.address.errors %}
+                                    <div class="text-danger">{{ checkout_form.address.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ checkout_form.city.id_for_label }}" class="form-label">City</label>
+                                        {{ checkout_form.city }}
+                                        {% if checkout_form.city.errors %}
+                                            <div class="text-danger">{{ checkout_form.city.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ checkout_form.postal_code.id_for_label }}" class="form-label">Postal Code</label>
+                                        {{ checkout_form.postal_code }}
+                                        {% if checkout_form.postal_code.errors %}
+                                            <div class="text-danger">{{ checkout_form.postal_code.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Method -->
+                    <div class="form-card">
+                        <div class="form-card-header">
+                            <i class="fas fa-credit-card"></i> Payment Method
+                        </div>
+                        <div class="form-card-body">
+                            <div class="form-group">
+                                <label for="{{ payment_form.payment_method.id_for_label }}" class="form-label">Payment Method</label>
+                                {{ payment_form.payment_method }}
+                                {% if payment_form.payment_method.errors %}
+                                    <div class="text-danger">{{ payment_form.payment_method.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Card Details Form -->
+                            <div id="card-details" class="card-form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="{{ payment_form.card_number.id_for_label }}" class="form-label">Card Number</label>
+                                            {{ payment_form.card_number }}
+                                            {% if payment_form.card_number.errors %}
+                                                <div class="text-danger">{{ payment_form.card_number.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="{{ payment_form.card_holder_name.id_for_label }}" class="form-label">Cardholder Name</label>
+                                            {{ payment_form.card_holder_name }}
+                                            {% if payment_form.card_holder_name.errors %}
+                                                <div class="text-danger">{{ payment_form.card_holder_name.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">CVV</label>
+                                            {{ payment_form.cvv }}
+                                            {% if payment_form.cvv.errors %}
+                                                <div class="text-danger">{{ payment_form.cvv.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="{{ payment_form.expiry_month.id_for_label }}" class="form-label">Expiry Month</label>
+                                            {{ payment_form.expiry_month }}
+                                            {% if payment_form.expiry_month.errors %}
+                                                <div class="text-danger">{{ payment_form.expiry_month.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="{{ payment_form.expiry_year.id_for_label }}" class="form-label">Expiry Year</label>
+                                            {{ payment_form.expiry_year }}
+                                            {% if payment_form.expiry_year.errors %}
+                                                <div class="text-danger">{{ payment_form.expiry_year.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit" onclick="console.log('Form submitted');">
+                        <i class="fas fa-lock"></i> Place Order
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="col-md-4">
+                <div class="order-summary">
+                    <h4><i class="fas fa-receipt"></i> Order Summary</h4>
+                    
+                    {% for item in cart %}
+                        <div class="product-item">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6>{{ item.product.name }}</h6>
+                                    <p class="text-muted">Qty: {{ item.quantity }}</p>
+                                </div>
+                                <div class="text-end">
+                                    <strong>${{ item.total_price }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                    <div class="order-total">
+                        <div class="d-flex justify-content-between">
+                            <strong>Total Items:</strong>
+                            <strong>{{ cart|length }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <strong>Total Price:</strong>
+                            <strong>${{ total_price }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Payment method toggle
+            const paymentMethodSelect = document.getElementById('id_payment_method');
+            const cardDetailsDiv = document.getElementById('card-details');
+            
+            function toggleCardForm() {
+                const selectedMethod = paymentMethodSelect.value;
+                if (selectedMethod === 'credit_card' || selectedMethod === 'debit_card') {
+                    cardDetailsDiv.classList.add('active');
+                } else {
+                    cardDetailsDiv.classList.remove('active');
+                }
+            }
+            
+            paymentMethodSelect.addEventListener('change', toggleCardForm);
+            toggleCardForm(); // Initial check
+            
+            // Format card number input
+            const cardNumberInput = document.getElementById('id_card_number');
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                    e.target.value = formattedValue;
+                });
+            }
+            
+            // Form submission with loading
+            const form = document.getElementById('checkout-form');
+            const loading = document.getElementById('loading');
+            
+            form.addEventListener('submit', function() {
+                loading.classList.add('show');
+            });
+            
+            // Enhanced form animations
+            const formInputs = document.querySelectorAll('.form-control');
+            formInputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.form-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+    
+    <!-- Bootstrap-like grid system -->
+    <style>
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+        
+        .col-md-4 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+            padding: 0 15px;
+        }
+        
+        .col-md-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding: 0 15px;
+        }
+        
+        .col-md-8 {
+            flex: 0 0 66.666667%;
+            max-width: 66.666667%;
+            padding: 0 15px;
+        }
+        
+        .col-md-12 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            padding: 0 15px;
+        }
+        
+        .d-flex {
+            display: flex;
+        }
+        
+        .justify-content-between {
+            justify-content: space-between;
+        }
+        
+        .text-end {
+            text-align: end;
+        }
+        
+        @media (max-width: 768px) {
+            .col-md-4,
+            .col-md-6,
+            .col-md-8,
+            .col-md-12 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</body>
+</html>

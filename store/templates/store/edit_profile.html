@@ -1,0 +1,834 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | OmniCart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Header Styles */
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .logo a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo span {
+            color: #ff6b6b;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            font-size: 1.08rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b6b;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-icons a {
+            margin-left: 20px;
+            font-size: 20px;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .nav-icons a:hover {
+            color: #ff6b6b;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb a {
+            color: #ff6b6b;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            color: #666;
+            margin: 0 10px;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .form-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #fff;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .form-control.error {
+            border-color: #dc3545;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .help-text {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        /* Button Styles */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        /* Profile Picture Section */
+        .profile-section {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .current-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ff6b6b;
+            margin-bottom: 20px;
+        }
+
+        .default-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            border: 4px solid #ff6b6b;
+            margin-bottom: 20px;
+        }
+
+        .picture-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        /* Messages */
+        .messages {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1050;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .picture-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .container {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+        }
+
+        /* Loading State */
+        .btn.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .btn.loading:before {
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="main-nav">
+            <div class="logo"><a href="/"><span>Omni</span>Cart</a></div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="{% url 'store' %}">Shop</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="{% url 'logout' %}" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+                <a href="{% url 'profile' %}" title="Profile"><i class="fa fa-user"></i></a>
+                <a href="{% url 'cart_summary' %}" title="Cart"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="{% url 'profile' %}">Profile</a>
+            <span>/</span>
+            <span>Edit Profile</span>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <!-- Form Header -->
+            <div class="form-header">
+                <h1 class="form-title">Edit Profile</h1>
+                <p class="form-subtitle">Update your personal information and preferences</p>
+            </div>
+
+            <!-- Profile Picture Section -->
+            <div class="profile-section">
+                <h3 style="margin-bottom: 20px; color: #333;">Profile Picture</h3>
+                {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="Current Profile Picture" class="current-picture" id="currentPicture">
+                {% else %}
+                    <div class="default-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="picture-actions">
+                    <button onclick="openUploadModal()" class="btn btn-primary btn-small">
+                        <i class="fas fa-camera"></i> Change Picture
+                    </button>
+                    {% if profile.profile_picture %}
+                    <button onclick="deleteProfilePicture()" class="btn btn-secondary btn-small">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Profile Form -->
+            <form method="post" id="profileForm">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.first_name.id_for_label }}">First Name</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            {% for error in form.first_name.errors %}
+                                <span class="error-message">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.last_name.id_for_label }}">Last Name</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            {% for error in form.last_name.errors %}
+                                <span class="error-message">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        {% for error in form.username.errors %}
+                            <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                    <small class="help-text">This will be your unique identifier on the platform.</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.email.id_for_label }}">Email Address</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        {% for error in form.email.errors %}
+                            <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                    <small class="help-text">We'll use this email for order confirmations and updates.</small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.phone_number.id_for_label }}">Phone Number</label>
+                        {{ form.phone_number }}
+                        {% if form.phone_number.errors %}
+                            {% for error in form.phone_number.errors %}
+                                <span class="error-message">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.date_of_birth.id_for_label }}">Date of Birth</label>
+                        {{ form.date_of_birth }}
+                        {% if form.date_of_birth.errors %}
+                            {% for error in form.date_of_birth.errors %}
+                                <span class="error-message">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.address.id_for_label }}">Address</label>
+                    {{ form.address }}
+                    {% if form.address.errors %}
+                        {% for error in form.address.errors %}
+                            <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.city.id_for_label }}">City</label>
+                        {{ form.city }}
+                        {% if form.city.errors %}
+                            {% for error in form.city.errors %}
+                                <span class="error-message">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="{{ form.country.id_for_label }}">Country</label>
+                        {{ form.country }}
+                        {% if form.country.errors %}
+                            {% for error in form.country.errors %}
+                                <span class="error-message">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Form Buttons -->
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary" id="saveBtn">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <a href="{% url 'profile' %}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Upload Modal (will be added via JavaScript for picture upload) -->
+    <div id="uploadModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeUploadModal()">&times;</span>
+            <h2>Update Profile Picture</h2>
+            
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #ddd; margin-bottom: 20px;"></i>
+                <p>Drag and drop your image here or 
+                    <label for="fileInput" style="color: #ff6b6b; cursor: pointer; font-weight: 600;">browse to upload</label>
+                </p>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                <button onclick="closeUploadModal()" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Auto-hide messages after 5 seconds
+        setTimeout(function() {
+            $('.messages').fadeOut();
+        }, 5000);
+
+        // Form submission with loading state
+        document.getElementById('profileForm').addEventListener('submit', function() {
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.classList.add('loading');
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Saving...';
+            saveBtn.disabled = true;
+        });
+
+        // Add modal styles dynamically
+        const modalStyles = `
+            .modal {
+                position: fixed;
+                z-index: 2000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+            }
+
+            .modal-content {
+                background-color: #fff;
+                margin: 5% auto;
+                padding: 30px;
+                border-radius: 15px;
+                width: 90%;
+                max-width: 500px;
+                position: relative;
+                animation: slideInDown 0.3s ease-out;
+            }
+
+            @keyframes slideInDown {
+                from {
+                    transform: translateY(-50px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            .close {
+                position: absolute;
+                right: 20px;
+                top: 20px;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+                color: #aaa;
+            }
+
+            .close:hover {
+                color: #ff6b6b;
+            }
+
+            .upload-area {
+                border: 2px dashed #ddd;
+                border-radius: 10px;
+                padding: 40px;
+                text-align: center;
+                margin: 20px 0;
+                transition: border-color 0.3s ease;
+            }
+
+            .upload-area:hover {
+                border-color: #ff6b6b;
+            }
+
+            .upload-area.dragover {
+                border-color: #ff6b6b;
+                background-color: #f8f9fa;
+            }
+        `;
+
+        // Add styles to head
+        const styleElement = document.createElement('style');
+        styleElement.textContent = modalStyles;
+        document.head.appendChild(styleElement);
+
+        // Upload Modal Functions
+        function openUploadModal() {
+            document.getElementById('uploadModal').style.display = 'block';
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+        }
+
+        // File Upload Handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        // Click to upload
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                uploadProfilePicture(files[0]);
+            }
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                uploadProfilePicture(e.target.files[0]);
+            }
+        });
+
+        // Upload function
+        function uploadProfilePicture(file) {
+            const formData = new FormData();
+            formData.append('profile_picture', file);
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+            $.ajax({
+                url: '{% url "upload_profile_picture" %}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        // Update profile image
+                        const currentPicture = document.getElementById('currentPicture');
+                        if (currentPicture) {
+                            currentPicture.src = response.image_url;
+                        } else {
+                            // Replace default avatar with image
+                            const profileSection = document.querySelector('.profile-section');
+                            const avatar = profileSection.querySelector('.default-avatar');
+                            if (avatar) {
+                                avatar.outerHTML = `<img src="${response.image_url}" alt="Current Profile Picture" class="current-picture" id="currentPicture">`;
+                            }
+                        }
+                        
+                        closeUploadModal();
+                        showMessage(response.message, 'success');
+                        
+                        // Add remove button if it doesn't exist
+                        if (!document.querySelector('.picture-actions .btn-secondary')) {
+                            const pictureActions = document.querySelector('.picture-actions');
+                            pictureActions.innerHTML += `
+                                <button onclick="deleteProfilePicture()" class="btn btn-secondary btn-small">
+                                    <i class="fas fa-trash"></i> Remove
+                                </button>
+                            `;
+                        }
+                    } else {
+                        showMessage(response.message, 'error');
+                    }
+                },
+                error: function() {
+                    showMessage('An error occurred while uploading the image.', 'error');
+                }
+            });
+        }
+
+        // Delete profile picture
+        function deleteProfilePicture() {
+            if (confirm('Are you sure you want to delete your profile picture?')) {
+                $.ajax({
+                    url: '{% url "delete_profile_picture" %}',
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Replace image with default avatar
+                            const currentPicture = document.getElementById('currentPicture');
+                            if (currentPicture) {
+                                currentPicture.outerHTML = `
+                                    <div class="default-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                `;
+                            }
+                            
+                            // Remove the delete button
+                            const deleteBtn = document.querySelector('.picture-actions .btn-secondary');
+                            if (deleteBtn) {
+                                deleteBtn.remove();
+                            }
+                            
+                            showMessage(response.message, 'success');
+                        } else {
+                            showMessage(response.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        showMessage('An error occurred while deleting the image.', 'error');
+                    }
+                });
+            }
+        }
+
+        // Show message function
+        function showMessage(message, type) {
+            const messagesContainer = $('.messages');
+            if (messagesContainer.length === 0) {
+                $('body').append('<div class="messages"></div>');
+            }
+            
+            $('.messages').append(`
+                <div class="alert alert-${type}">
+                    ${message}
+                </div>
+            `);
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                $('.alert').last().fadeOut();
+            }, 5000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('uploadModal');
+            if (event.target === modal) {
+                closeUploadModal();
+            }
+        }
+
+        // Add form control classes to form fields
+        document.addEventListener('DOMContentLoaded', function() {
+            const formInputs = document.querySelectorAll('input, select, textarea');
+            formInputs.forEach(input => {
+                input.classList.add('form-control');
+                
+                // Add error class if field has errors
+                const errorMessage = input.parentNode.querySelector('.error-message');
+                if (errorMessage) {
+                    input.classList.add('error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

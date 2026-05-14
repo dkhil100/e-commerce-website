@@ -1,0 +1,351 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❌ Payment Failed - OmniCart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Advanced Animation Keyframes */
+        @keyframes slideInUp {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideInDown {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            color: #333;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        /* Failed container */
+        .failed-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideInUp 0.8s ease-out;
+        }
+        
+        .failed-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: bounceIn 1s ease-out 0.3s both;
+        }
+        
+        .failed-icon {
+            font-size: 6rem;
+            color: #dc3545;
+            margin-bottom: 20px;
+            animation: shake 0.8s ease-in-out;
+            text-shadow: 0 0 20px rgba(220, 53, 69, 0.5);
+        }
+        
+        .failed-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .failed-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+        }
+
+        /* Alert styling */
+        .alert {
+            background: rgba(220, 53, 69, 0.1);
+            border: 2px solid rgba(220, 53, 69, 0.3);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            color: #fff;
+            animation: slideInDown 0.8s ease-out 0.4s both;
+        }
+        
+        .alert i {
+            color: #dc3545;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .alert strong {
+            color: #fff;
+        }
+
+        /* Card styling */
+        .info-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+            animation: slideInUp 0.8s ease-out 0.6s both;
+        }
+        
+        .card-body {
+            padding: 30px;
+        }
+        
+        .card-title {
+            color: #1a1a1a;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .card-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #dc3545, #e83e8c);
+        }
+        
+        .card-title i {
+            color: #dc3545;
+            margin-right: 10px;
+        }
+        
+        .solution-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .solution-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f3f4;
+            transition: all 0.3s ease;
+        }
+        
+        .solution-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .solution-list li:hover {
+            background: rgba(40, 167, 69, 0.05);
+            padding-left: 15px;
+            border-radius: 8px;
+        }
+        
+        .solution-list li i {
+            color: #28a745;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Action buttons */
+        .action-buttons {
+            text-align: center;
+            margin: 40px 0;
+            animation: slideInUp 0.8s ease-out 0.8s both;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #dc3545, #e83e8c);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            display: inline-flex;
+            align-items: center;
+            margin: 0 10px;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #6c757d, #495057);
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+
+        /* Contact info */
+        .contact-info {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+            animation: slideInUp 0.8s ease-out 1s both;
+        }
+        
+        .contact-info h5 {
+            color: #1a1a1a;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .contact-info i {
+            color: #17a2b8;
+            margin-right: 10px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .failed-container {
+                padding: 20px 10px;
+            }
+            
+            .failed-title {
+                font-size: 2rem;
+            }
+            
+            .failed-icon {
+                font-size: 4rem;
+            }
+            
+            .btn {
+                display: block;
+                margin: 10px auto;
+                width: 200px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="failed-container">
+        <div class="failed-header">
+            <i class="fas fa-times-circle failed-icon"></i>
+            <h1 class="failed-title">Payment Failed!</h1>
+            <p class="failed-subtitle">Unfortunately, your payment could not be processed at this time.</p>
+        </div>
+        
+        <div class="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>What happened?</strong> There was an issue processing your payment. 
+            This could be due to insufficient funds, incorrect card details, or a temporary issue with the payment processor.
+        </div>
+        
+        <div class="info-card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-lightbulb"></i> What can you do?</h5>
+                <ul class="solution-list">
+                    <li><i class="fas fa-check"></i> Check your card details and try again</li>
+                    <li><i class="fas fa-check"></i> Try a different payment method</li>
+                    <li><i class="fas fa-check"></i> Contact your bank if the issue persists</li>
+                    <li><i class="fas fa-check"></i> Contact our customer support for assistance</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="{% url 'payment:checkout' %}" class="btn">
+                <i class="fas fa-redo"></i> Try Again
+            </a>
+            <a href="{% url 'store' %}" class="btn btn-secondary">
+                <i class="fas fa-shopping-cart"></i> Continue Shopping
+            </a>
+        </div>
+        
+        <div class="contact-info">
+            <h5><i class="fas fa-headset"></i> Need Help?</h5>
+            <p>If you continue to experience issues, please contact our customer support team. We're here to help!</p>
+        </div>
+    </div>
+</body>
+</html>
+                <i class="fas fa-redo"></i> Try Again
+            </a>
+            <a href="{% url 'cart_summary' %}" class="btn btn-secondary me-2">
+                <i class="fas fa-shopping-cart"></i> Back to Cart
+            </a>
+            <a href="{% url 'store' %}" class="btn btn-outline-primary">
+                <i class="fas fa-home"></i> Continue Shopping
+            </a>
+        </div>
+        
+        <div class="text-center mt-4">
+            <p class="text-muted">
+                <i class="fas fa-headset"></i> 
+                Need help? <a href="mailto:support@yourstore.com">Contact our support team</a>
+            </p>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
